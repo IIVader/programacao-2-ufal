@@ -1,2 +1,2 @@
 # programacao-2-ufal
-Repositório destinado à resolução de problemas propostos na disciplina programação 2
+Repository intended for solving problems proposed in the programming 2 discipline
