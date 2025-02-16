@@ -1,3 +1,5 @@
+package atv2025_02_10.entities;
+
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
@@ -15,15 +17,7 @@ public class ShoppingCart {
     }
 
     public void removeProduct(Product product) {
-        int index = 0;
-
-        for(int i = 0; i < productList.size(); i++) {
-            if(productList.get(i).getName().equalsIgnoreCase(product.getName())) {
-                index = i;
-            }
-        }
-
-        productList.remove(index);
+        productList.remove(product);
     }
 
     public String getContent() {

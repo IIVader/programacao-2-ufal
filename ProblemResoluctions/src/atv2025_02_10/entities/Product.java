@@ -1,3 +1,5 @@
+package atv2025_02_10.entities;
+
 public class Product {
 
     private String name;
@@ -16,3 +18,4 @@ public class Product {
         return price;
     }
 }
+
