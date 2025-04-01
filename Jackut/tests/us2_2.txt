@@ -15,4 +15,3 @@ expect "com companheiro(a)" getAtributoUsuario login=jpsauve atributo=moro
 
 encerrarSistema
 quit
-
