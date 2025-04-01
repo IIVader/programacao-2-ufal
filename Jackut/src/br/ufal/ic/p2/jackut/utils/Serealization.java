@@ -28,6 +28,11 @@ public class Serealization {
     public static void serealizeObject(HashMap<String, UserAccount> accounts, String fileName) {
 
         try {
+            File directory = new File(pathFile);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+
             FileOutputStream fileOutputStream = new FileOutputStream(pathFile + File.separator + fileName + ".ser");
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
             objectOutputStream.writeObject(accounts);
