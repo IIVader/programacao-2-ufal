@@ -13,11 +13,13 @@ import br.ufal.ic.p2.jackut.exceptions.user.RequestAlreadySendedException;
 import br.ufal.ic.p2.jackut.exceptions.user.UnregisteredUserException;
 import br.ufal.ic.p2.jackut.exceptions.user.UserAlreadyIsFriendException;
 import br.ufal.ic.p2.jackut.exceptions.user.UserCannotAddHimselfException;
+import br.ufal.ic.p2.jackut.exceptions.jackutsystem.UserIsAlreadyInThisCommunityException;
 import br.ufal.ic.p2.jackut.models.Community;
 import br.ufal.ic.p2.jackut.models.Note;
 import br.ufal.ic.p2.jackut.models.Profile;
 import br.ufal.ic.p2.jackut.models.UserAccount;
 import br.ufal.ic.p2.jackut.utils.Serealization;
+import br.ufal.ic.p2.jackut.utils.UtilsString;
 
 import java.util.*;
 
@@ -287,6 +289,7 @@ public class JackutSystem {
         }
 
         UserAccount owner = activeSessions.get(id);
+        owner.setCommunityList(name);
 
         Community community = new Community(name, description, owner);
         communityMap.put(name, community);
@@ -320,6 +323,31 @@ public class JackutSystem {
         }
     }
 
+    public String getCommunity(String login) throws UnregisteredUserException {
+        if (!(getUsersMap().containsKey(login))) {
+            throw new UnregisteredUserException();
+        }
+
+        return UtilsString.formatArrayList(usersMap.get(login).getCommunityList());
+    }
+
+    public void addComunity(String id, String comunityName) throws UnregisteredUserException, CommunityDoesNotExistsException, UserIsAlreadyInThisCommunityException {
+        if (!activeSessions.containsKey(id)) {
+            throw new UnregisteredUserException();
+        }
+
+        if(!(communityMap.containsKey(comunityName))) {
+            throw new CommunityDoesNotExistsException();
+        }
+
+        if(activeSessions.get(id).getCommunityList().contains(comunityName)) {
+            throw new UserIsAlreadyInThisCommunityException();
+        } else {
+            communityMap.get(comunityName).setMembersList(activeSessions.get(id));
+            activeSessions.get(id).setCommunityList(comunityName);
+        }
+    }
+
     /**
      * Salva os dados dos usuários no sistema.
      */
@@ -327,7 +355,7 @@ public class JackutSystem {
     public void saveData() {
 
         Serealization.serealizeObject(usersMap, "usersAccount");
-        Serealization.serealizeObject(communityMap, "communitys");
+        Serealization.serealizeObject(communityMap, "communities");
     }
 
     /**
@@ -345,7 +373,7 @@ public class JackutSystem {
 
     public void readData() {
         this.usersMap = Serealization.deserializeObject("usersAccount");
-        this.communityMap = Serealization.deserializeObject("communitys");
+        this.communityMap = Serealization.deserializeObject("communities");
     }
 
     /**

@@ -1,11 +1,6 @@
 package br.ufal.ic.p2.jackut;
 
-import br.ufal.ic.p2.jackut.exceptions.jackutsystem.CommunityAlreadyExistsException;
-import br.ufal.ic.p2.jackut.exceptions.jackutsystem.CommunityDoesNotExistsException;
-import br.ufal.ic.p2.jackut.exceptions.jackutsystem.InvalidLoginOrPasswordException;
-import br.ufal.ic.p2.jackut.exceptions.jackutsystem.LoginInvalidException;
-import br.ufal.ic.p2.jackut.exceptions.jackutsystem.PasswordInvalidException;
-import br.ufal.ic.p2.jackut.exceptions.jackutsystem.UserAlreadyExistsException;
+import br.ufal.ic.p2.jackut.exceptions.jackutsystem.*;
 import br.ufal.ic.p2.jackut.exceptions.note.ThereAreNoNotesException;
 import br.ufal.ic.p2.jackut.exceptions.note.UserCannotSendNoteToHimselfException;
 import br.ufal.ic.p2.jackut.exceptions.profile.InvalidAttributeProvidedException;
@@ -165,6 +160,14 @@ public class Facade {
 
     public String getMembrosComunidade(String nome) throws CommunityDoesNotExistsException {
         return jackutSystem.getMembersCommunity(nome);
+    }
+
+    public String getComunidades(String login) throws UnregisteredUserException {
+        return jackutSystem.getCommunity(login);
+    }
+
+    public void adicionarComunidade(String id, String nome) throws UnregisteredUserException, CommunityDoesNotExistsException, UserIsAlreadyInThisCommunityException {
+        jackutSystem.addComunity(id, nome);
     }
 
     /**

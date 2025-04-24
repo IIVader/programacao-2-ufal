@@ -36,4 +36,8 @@ public class Community implements Serializable {
     public String getMembersString() {
         return UtilsString.formatArrayList(this.membersList);
     }
+
+    public void setMembersList(UserAccount member) {
+        this.membersList.add(member);
+    }
 }

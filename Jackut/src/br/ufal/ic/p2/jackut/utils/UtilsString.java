@@ -17,7 +17,7 @@ public class UtilsString {
      * @return uma representação em string da lista no formato {obj1,obj2,...,objN}, ou "{}" se a lista estiver vazia.
      */
 
-    public static <T> String formatArrayList(List<UserAccount> arrayList) {
+    public static <T> String formatArrayList(List<T> arrayList) {
         if (arrayList.isEmpty()) {
             return "{}";
         }

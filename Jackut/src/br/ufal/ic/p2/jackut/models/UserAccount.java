@@ -29,6 +29,8 @@ public class UserAccount implements Serializable {
 
     private Queue<Note> notesQueue = new LinkedList<>();
 
+    private ArrayList<String> communityList = new ArrayList<>();
+
     /**
      * Constrói uma nova conta de usuário.
      *
@@ -157,6 +159,14 @@ public class UserAccount implements Serializable {
 
     public void setNotesQueue(Note note) {
         this.notesQueue.add(note);
+    }
+
+    public ArrayList<String> getCommunityList() {
+        return communityList;
+    }
+
+    public void setCommunityList(String communityName) {
+        this.communityList.add(communityName);
     }
 
     /**
