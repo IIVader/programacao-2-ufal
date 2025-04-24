@@ -25,7 +25,7 @@ public class Serealization {
      * @param fileName Nome do arquivo onde os dados serão armazenados.
      */
 
-    public static void serealizeObject(HashMap<String, UserAccount> accounts, String fileName) {
+    public static void serealizeObject(HashMap<String, ? extends Serializable> accounts, String fileName) {
 
         try {
             File directory = new File(pathFile);
@@ -53,7 +53,7 @@ public class Serealization {
      *         ou um mapa vazio se o arquivo não for encontrado ou ocorrer um erro na desserialização.
      */
 
-    public static HashMap<String, UserAccount> deserializeObject(String fileName) {
+    public static <T extends Serializable> HashMap<String, T> deserializeObject(String fileName) {
 
         try {
             File file = new File(pathFile + File.separator + fileName + ".ser");
@@ -62,7 +62,7 @@ public class Serealization {
             }
 
             ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(pathFile + File.separator + fileName + ".ser"));
-            return (HashMap<String, UserAccount>) objectInputStream.readObject();
+            return (HashMap<String, T>) objectInputStream.readObject();
         } catch (Exception e) {
             e.printStackTrace();
         }

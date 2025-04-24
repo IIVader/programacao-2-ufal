@@ -1,5 +1,7 @@
 package br.ufal.ic.p2.jackut;
 
+import br.ufal.ic.p2.jackut.exceptions.jackutsystem.CommunityAlreadyExistsException;
+import br.ufal.ic.p2.jackut.exceptions.jackutsystem.CommunityDoesNotExistsException;
 import br.ufal.ic.p2.jackut.exceptions.jackutsystem.InvalidLoginOrPasswordException;
 import br.ufal.ic.p2.jackut.exceptions.jackutsystem.LoginInvalidException;
 import br.ufal.ic.p2.jackut.exceptions.jackutsystem.PasswordInvalidException;
@@ -147,6 +149,22 @@ public class Facade {
 
     public String getAmigos(String login) {
         return jackutSystem.getFriends(login);
+    }
+
+    public void criarComunidade(String id, String nome, String descricao) throws UnregisteredUserException, CommunityAlreadyExistsException {
+        jackutSystem.createCommunity(id, nome, descricao);
+    }
+
+    public String getDescricaoComunidade(String nome) throws CommunityDoesNotExistsException {
+        return jackutSystem.getDescriptionCommunity(nome);
+    }
+
+    public String getDonoComunidade(String nome) throws CommunityDoesNotExistsException {
+        return jackutSystem.getOwnerCommunity(nome);
+    }
+
+    public String getMembrosComunidade(String nome) throws CommunityDoesNotExistsException {
+        return jackutSystem.getMembersCommunity(nome);
     }
 
     /**
