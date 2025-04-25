@@ -28,6 +28,7 @@ public class UserAccount implements Serializable {
     private ArrayList<UserAccount> friendsRequestsReceived = new ArrayList<>();
 
     private Queue<Note> notesQueue = new LinkedList<>();
+    private Queue<Message> messagesQueue = new LinkedList<>();
 
     private ArrayList<String> communityList = new ArrayList<>();
 
@@ -167,6 +168,14 @@ public class UserAccount implements Serializable {
 
     public void setCommunityList(String communityName) {
         this.communityList.add(communityName);
+    }
+
+    public Queue<Message> getMessagesQueue() {
+        return messagesQueue;
+    }
+
+    public void setMessagesQueue(Message message) {
+        this.messagesQueue.add(message);
     }
 
     /**

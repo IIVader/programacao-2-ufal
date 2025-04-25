@@ -1,5 +1,6 @@
 package br.ufal.ic.p2.jackut;
 
+import br.ufal.ic.p2.jackut.exceptions.community.ThereAreNoMessagesException;
 import br.ufal.ic.p2.jackut.exceptions.jackutsystem.*;
 import br.ufal.ic.p2.jackut.exceptions.note.ThereAreNoNotesException;
 import br.ufal.ic.p2.jackut.exceptions.note.UserCannotSendNoteToHimselfException;
@@ -169,6 +170,15 @@ public class Facade {
     public void adicionarComunidade(String id, String nome) throws UnregisteredUserException, CommunityDoesNotExistsException, UserIsAlreadyInThisCommunityException {
         jackutSystem.addComunity(id, nome);
     }
+
+    public void enviarMensagem(String id, String comunidadeReceptora, String mensagem) throws UnregisteredUserException, CommunityDoesNotExistsException {
+        jackutSystem.sendMessage(id, comunidadeReceptora, mensagem);
+    }
+
+    public String lerMensagem(String id) throws UnregisteredUserException, ThereAreNoMessagesException {
+        return jackutSystem.readMessage(id);
+    }
+
 
     /**
      * Encerra o sistema Jackut, liberando os recursos utilizados.

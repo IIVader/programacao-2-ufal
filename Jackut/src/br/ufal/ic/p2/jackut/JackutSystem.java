@@ -14,10 +14,8 @@ import br.ufal.ic.p2.jackut.exceptions.user.UnregisteredUserException;
 import br.ufal.ic.p2.jackut.exceptions.user.UserAlreadyIsFriendException;
 import br.ufal.ic.p2.jackut.exceptions.user.UserCannotAddHimselfException;
 import br.ufal.ic.p2.jackut.exceptions.jackutsystem.UserIsAlreadyInThisCommunityException;
-import br.ufal.ic.p2.jackut.models.Community;
-import br.ufal.ic.p2.jackut.models.Note;
-import br.ufal.ic.p2.jackut.models.Profile;
-import br.ufal.ic.p2.jackut.models.UserAccount;
+import br.ufal.ic.p2.jackut.exceptions.community.ThereAreNoMessagesException;
+import br.ufal.ic.p2.jackut.models.*;
 import br.ufal.ic.p2.jackut.utils.Serealization;
 import br.ufal.ic.p2.jackut.utils.UtilsString;
 
@@ -346,6 +344,41 @@ public class JackutSystem {
             communityMap.get(comunityName).setMembersList(activeSessions.get(id));
             activeSessions.get(id).setCommunityList(comunityName);
         }
+    }
+
+    public void sendMessage(String id, String receiverCommunity, String message) throws UnregisteredUserException, CommunityDoesNotExistsException {
+        if (!activeSessions.containsKey(id)) {
+            throw new UnregisteredUserException();
+        }
+
+        if(!(communityMap.containsKey(receiverCommunity))) {
+            throw new CommunityDoesNotExistsException();
+        }
+
+        Message newMessage = new Message(message);
+
+        Community community = communityMap.get(receiverCommunity);
+
+        for(UserAccount userAccount : community.getMembersList()) {
+            userAccount.setMessagesQueue(newMessage);
+        }
+    }
+
+    public String readMessage(String id) throws UnregisteredUserException, ThereAreNoMessagesException {
+        if (!activeSessions.containsKey(id)) {
+            throw new UnregisteredUserException();
+        }
+
+        UserAccount userAccount = activeSessions.get(id);
+
+        if(userAccount.getMessagesQueue().isEmpty()) {
+            throw new ThereAreNoMessagesException();
+        }
+
+        Message message = userAccount.getMessagesQueue().poll();
+
+        assert message != null;
+        return message.getMessage();
     }
 
     /**

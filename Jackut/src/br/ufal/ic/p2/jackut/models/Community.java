@@ -3,9 +3,7 @@ package br.ufal.ic.p2.jackut.models;
 import br.ufal.ic.p2.jackut.utils.UtilsString;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Community implements Serializable {
     private String name;
@@ -35,6 +33,10 @@ public class Community implements Serializable {
 
     public String getMembersString() {
         return UtilsString.formatArrayList(this.membersList);
+    }
+
+    public ArrayList<UserAccount> getMembersList() {
+        return membersList;
     }
 
     public void setMembersList(UserAccount member) {
