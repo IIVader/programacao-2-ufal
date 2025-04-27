@@ -5,10 +5,7 @@ import br.ufal.ic.p2.jackut.exceptions.jackutsystem.*;
 import br.ufal.ic.p2.jackut.exceptions.note.ThereAreNoNotesException;
 import br.ufal.ic.p2.jackut.exceptions.note.UserCannotSendNoteToHimselfException;
 import br.ufal.ic.p2.jackut.exceptions.profile.InvalidAttributeProvidedException;
-import br.ufal.ic.p2.jackut.exceptions.user.RequestAlreadySendedException;
-import br.ufal.ic.p2.jackut.exceptions.user.UnregisteredUserException;
-import br.ufal.ic.p2.jackut.exceptions.user.UserAlreadyIsFriendException;
-import br.ufal.ic.p2.jackut.exceptions.user.UserCannotAddHimselfException;
+import br.ufal.ic.p2.jackut.exceptions.user.*;
 
 /**
  * <p> Classe fachada que implementa a interface do sistema Jackut. </p>
@@ -105,7 +102,7 @@ public class Facade {
      * @throws UserCannotAddHimselfException Se o usuário tentar enviar amizade para si mesmo.
      */
 
-    public void adicionarAmigo(String id, String amigo) throws UnregisteredUserException, RequestAlreadySendedException, UserAlreadyIsFriendException, UserCannotAddHimselfException {
+    public void adicionarAmigo(String id, String amigo) throws UnregisteredUserException, RequestAlreadySendedException, UserAlreadyIsFriendException, UserCannotAddHimselfException, InvalidFunctionDueEnemyException {
         jackutSystem.addFriend(id, amigo);
     }
 
@@ -119,8 +116,8 @@ public class Facade {
      * @throws UserCannotSendNoteToHimselfException Se o usuário tentar enviar um recado para si mesmo.
      */
 
-    public void enviarRecado(String id, String destinatario, String recado) throws UnregisteredUserException, UserCannotSendNoteToHimselfException {
-        jackutSystem.SendNote(id, destinatario, recado);
+    public void enviarRecado(String id, String destinatario, String recado) throws UnregisteredUserException, UserCannotSendNoteToHimselfException, InvalidFunctionDueEnemyException {
+        jackutSystem.sendNote(id, destinatario, recado);
     }
 
     /**
@@ -179,6 +176,33 @@ public class Facade {
         return jackutSystem.readMessage(id);
     }
 
+    public Boolean ehFa(String login, String idolo) {
+        return jackutSystem.isFan(login, idolo);
+    }
+
+    public void adicionarIdolo(String id, String nomeIdolo) throws UnregisteredUserException, UserAlreadyIsAnIdolException, UserCannotBeAFanOfHimselfException, InvalidFunctionDueEnemyException {
+        jackutSystem.addIdol(id, nomeIdolo);
+    }
+
+    public String getFas(String login) {
+        return jackutSystem.getFans(login);
+    }
+
+    public Boolean ehPaquera(String id, String paquera) throws UnregisteredUserException {
+        return jackutSystem.isCrush(id, paquera);
+    }
+
+    public void adicionarPaquera(String id, String paquera) throws UnregisteredUserException, UserIsAlreadyYourCrushException, UserCannotBeACrushOfHimselfException, InvalidFunctionDueEnemyException {
+        jackutSystem.addCrush(id, paquera);
+    }
+
+    public String getPaqueras(String id) throws UserCannotSendNoteToHimselfException, UnregisteredUserException, InvalidFunctionDueEnemyException {
+        return jackutSystem.getCrushs(id);
+    }
+
+    public void adicionarInimigo(String id, String inimigoNome) throws UnregisteredUserException, UserIsAlreadyYourEnemyException, UserCannotBeAEnemyOfHimselfException {
+        jackutSystem.addEnemy(id, inimigoNome);
+    }
 
     /**
      * Encerra o sistema Jackut, liberando os recursos utilizados.

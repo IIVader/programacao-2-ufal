@@ -1,19 +1,10 @@
 package br.ufal.ic.p2.jackut;
 
-import br.ufal.ic.p2.jackut.exceptions.jackutsystem.CommunityAlreadyExistsException;
-import br.ufal.ic.p2.jackut.exceptions.jackutsystem.CommunityDoesNotExistsException;
-import br.ufal.ic.p2.jackut.exceptions.jackutsystem.InvalidLoginOrPasswordException;
-import br.ufal.ic.p2.jackut.exceptions.jackutsystem.LoginInvalidException;
-import br.ufal.ic.p2.jackut.exceptions.jackutsystem.PasswordInvalidException;
-import br.ufal.ic.p2.jackut.exceptions.jackutsystem.UserAlreadyExistsException;
+import br.ufal.ic.p2.jackut.exceptions.jackutsystem.*;
 import br.ufal.ic.p2.jackut.exceptions.note.ThereAreNoNotesException;
 import br.ufal.ic.p2.jackut.exceptions.note.UserCannotSendNoteToHimselfException;
 import br.ufal.ic.p2.jackut.exceptions.profile.InvalidAttributeProvidedException;
-import br.ufal.ic.p2.jackut.exceptions.user.RequestAlreadySendedException;
-import br.ufal.ic.p2.jackut.exceptions.user.UnregisteredUserException;
-import br.ufal.ic.p2.jackut.exceptions.user.UserAlreadyIsFriendException;
-import br.ufal.ic.p2.jackut.exceptions.user.UserCannotAddHimselfException;
-import br.ufal.ic.p2.jackut.exceptions.jackutsystem.UserIsAlreadyInThisCommunityException;
+import br.ufal.ic.p2.jackut.exceptions.user.*;
 import br.ufal.ic.p2.jackut.exceptions.community.ThereAreNoMessagesException;
 import br.ufal.ic.p2.jackut.models.*;
 import br.ufal.ic.p2.jackut.utils.Serealization;
@@ -210,7 +201,7 @@ public class JackutSystem {
      * @throws UserCannotAddHimselfException Se o usuário tentar adicionar a si mesmo.
      */
 
-    public void addFriend(String id, String amigo) throws UnregisteredUserException, RequestAlreadySendedException, UserAlreadyIsFriendException, UserCannotAddHimselfException {
+    public void addFriend(String id, String amigo) throws UnregisteredUserException, RequestAlreadySendedException, UserAlreadyIsFriendException, UserCannotAddHimselfException, InvalidFunctionDueEnemyException {
         if (!(activeSessions.containsKey(id) && usersMap.containsKey(amigo))) {
             throw new UnregisteredUserException();
         }
@@ -224,6 +215,10 @@ public class JackutSystem {
 
         if (userAccount.getFriendList().contains(friendUserAccount) && friendUserAccount.getFriendList().contains(userAccount)) {
             throw new UserAlreadyIsFriendException();
+        }
+
+        if(friendUserAccount.getEnemysList().contains(userAccount.getLogin())) {
+            throw new InvalidFunctionDueEnemyException(friendUserAccount.getUserName());
         }
 
         if (userAccount.getFriendsRequestsSent().contains(friendUserAccount)) {
@@ -248,13 +243,17 @@ public class JackutSystem {
         return userAccount.getFriendsString();
     }
 
-    public void SendNote(String id, String receiver, String note) throws UnregisteredUserException, UserCannotSendNoteToHimselfException {
+    public void sendNote(String id, String receiver, String note) throws UnregisteredUserException, UserCannotSendNoteToHimselfException, InvalidFunctionDueEnemyException {
         if (!(activeSessions.containsKey(id) && usersMap.containsKey(receiver))) {
             throw new UnregisteredUserException();
         }
 
         if (activeSessions.get(id).getLogin().equals(receiver)) {
             throw new UserCannotSendNoteToHimselfException();
+        }
+
+        if(usersMap.get(receiver).getEnemysList().contains(activeSessions.get(id).getLogin())) {
+            throw new InvalidFunctionDueEnemyException(usersMap.get(receiver).getUserName());
         }
 
         Note newNote = new Note(id, receiver, note);
@@ -379,6 +378,114 @@ public class JackutSystem {
 
         assert message != null;
         return message.getMessage();
+    }
+
+    public Boolean isFan(String login, String idol) {
+        return usersMap.get(idol).getFansList().contains(login);
+    }
+
+    public void addIdol(String id, String idolName) throws UnregisteredUserException, UserAlreadyIsAnIdolException, UserCannotBeAFanOfHimselfException, InvalidFunctionDueEnemyException {
+        if (!activeSessions.containsKey(id)) {
+            throw new UnregisteredUserException();
+        }
+
+        if(!(usersMap.containsKey(idolName))) {
+            throw new UnregisteredUserException();
+        }
+
+        String userLogin = activeSessions.get(id).getLogin();
+        if(usersMap.get(idolName).getFansList().contains(userLogin)) {
+            throw new UserAlreadyIsAnIdolException();
+        }
+
+        if(userLogin.equals(idolName)) {
+            throw new UserCannotBeAFanOfHimselfException();
+        }
+
+        if(usersMap.get(idolName).getEnemysList().contains(userLogin)) {
+            throw new InvalidFunctionDueEnemyException(usersMap.get(idolName).getUserName());
+        }
+
+        usersMap.get(idolName).setFansList(activeSessions.get(id).getLogin());
+    }
+
+    public String getFans(String login) {
+        UserAccount userAccount = usersMap.get(login);
+
+        return userAccount.getFansString();
+    }
+
+    public Boolean isCrush(String id, String crush) throws UnregisteredUserException {
+        if (!activeSessions.containsKey(id)) {
+            throw new UnregisteredUserException();
+        }
+
+        return activeSessions.get(id).getCrushsList().contains(crush);
+    }
+
+    public void addCrush(String id, String crush) throws UnregisteredUserException, UserIsAlreadyYourCrushException, UserCannotBeACrushOfHimselfException, InvalidFunctionDueEnemyException {
+        if (!activeSessions.containsKey(id)) {
+            throw new UnregisteredUserException();
+        }
+
+        String userLogin = activeSessions.get(id).getLogin();
+
+        if(!(usersMap.containsKey(crush))) {
+            throw new UnregisteredUserException();
+        }
+
+        if(activeSessions.get(id).getCrushsList().contains(crush)) {
+            throw new UserIsAlreadyYourCrushException();
+        }
+
+        if(userLogin.equals(crush)) {
+            throw new UserCannotBeACrushOfHimselfException();
+        }
+
+        if(usersMap.get(crush).getEnemysList().contains(userLogin)) {
+            throw new InvalidFunctionDueEnemyException(usersMap.get(crush).getUserName());
+        }
+
+        activeSessions.get(id).setCrushsList(crush);
+    }
+
+    public void automaticMessageForCrush(String id) throws UserCannotSendNoteToHimselfException, UnregisteredUserException, InvalidFunctionDueEnemyException {
+        ArrayList<String> crushList = activeSessions.get(id).getCrushsList();
+
+        for(String crush : crushList) {
+            if(usersMap.containsKey(crush)) {
+                if(usersMap.get(crush).getCrushsList().contains(activeSessions.get(id).getLogin())) {
+                    sendNote(id, crush, activeSessions.get(id).getUserName() + " é seu paquera - Recado do Jackut.");
+                }
+            }
+        }
+    }
+
+    public String getCrushs(String id) throws UserCannotSendNoteToHimselfException, UnregisteredUserException, InvalidFunctionDueEnemyException {
+        automaticMessageForCrush(id);
+
+        return activeSessions.get(id).getCrushsString();
+    }
+
+    public void addEnemy(String id, String enemyName) throws UnregisteredUserException, UserIsAlreadyYourEnemyException, UserCannotBeAEnemyOfHimselfException {
+        if (!activeSessions.containsKey(id)) {
+            throw new UnregisteredUserException();
+        }
+
+        if(!(usersMap.containsKey(enemyName))) {
+            throw new UnregisteredUserException();
+        }
+
+        if(activeSessions.get(id).getEnemysList().contains(enemyName)) {
+            throw new UserIsAlreadyYourEnemyException();
+        }
+
+        String userLogin = activeSessions.get(id).getLogin();
+        if(userLogin.equals(enemyName)) {
+            throw new UserCannotBeAEnemyOfHimselfException();
+        }
+
+        activeSessions.get(id).setEnemysList(enemyName);
     }
 
     /**

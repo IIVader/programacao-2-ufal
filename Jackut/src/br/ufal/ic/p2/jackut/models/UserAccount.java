@@ -32,6 +32,10 @@ public class UserAccount implements Serializable {
 
     private ArrayList<String> communityList = new ArrayList<>();
 
+    private ArrayList<String> fansList = new ArrayList<>();
+    private ArrayList<String> crushsList = new ArrayList<>();
+    private ArrayList<String> enemysList = new ArrayList<>();
+
     /**
      * Constrói uma nova conta de usuário.
      *
@@ -176,6 +180,42 @@ public class UserAccount implements Serializable {
 
     public void setMessagesQueue(Message message) {
         this.messagesQueue.add(message);
+    }
+
+    public ArrayList<String> getFansList() {
+        return fansList;
+    }
+
+    public void setFansList(String fanName) {
+        this.fansList.add(fanName);
+    }
+
+    public String getFansString() {
+        return UtilsString.formatArrayList(this.fansList);
+    }
+
+    public ArrayList<String> getCrushsList() {
+        return crushsList;
+    }
+
+    public void setCrushsList(String crushName) {
+        this.crushsList.add(crushName);
+    }
+
+    public String getCrushsString() {
+        return UtilsString.formatArrayList(this.crushsList);
+    }
+
+    public ArrayList<String> getEnemysList() {
+        return enemysList;
+    }
+
+    public void setEnemysList(String enemyName) {
+        this.enemysList.add(enemyName);
+    }
+
+    public String getEnemysString() {
+        return UtilsString.formatArrayList(this.enemysList);
     }
 
     /**
