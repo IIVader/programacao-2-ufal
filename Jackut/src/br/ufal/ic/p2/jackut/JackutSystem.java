@@ -258,6 +258,8 @@ public class JackutSystem {
 
         Note newNote = new Note(id, receiver, note);
 
+        activeSessions.get(id).getPeopleISentNotesTo().add(receiver);
+
         usersMap.get(receiver).setNotesQueue(newNote);
     }
 
@@ -486,6 +488,30 @@ public class JackutSystem {
         }
 
         activeSessions.get(id).setEnemysList(enemyName);
+    }
+
+    public void removeUser(String id) throws UnregisteredUserException {
+        if (!activeSessions.containsKey(id)) {
+            throw new UnregisteredUserException();
+        }
+
+        UserAccount userToBeDeleted = activeSessions.get(id);
+
+        for(String userName : userToBeDeleted.getPeopleISentNotesTo()) {
+            usersMap.get(userName).getNotesQueue().poll();
+        }
+
+        for(Community community : communityMap.values()) {
+            if(community.getOwner().getLogin().equals(userToBeDeleted.getLogin())) {
+                communityMap.remove(community.getName());
+                for(int i = 0; i < community.getMembersList().size(); i++) {
+                    community.getMembersList().get(i).getCommunityList().remove(community.getName());
+                }
+            }
+        }
+
+        usersMap.remove(userToBeDeleted.getLogin());
+        activeSessions.remove(id);
     }
 
     /**

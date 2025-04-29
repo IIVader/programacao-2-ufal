@@ -30,6 +30,8 @@ public class UserAccount implements Serializable {
     private Queue<Note> notesQueue = new LinkedList<>();
     private Queue<Message> messagesQueue = new LinkedList<>();
 
+    private ArrayList<String> peopleISentNotesTo = new ArrayList<>();
+
     private ArrayList<String> communityList = new ArrayList<>();
 
     private ArrayList<String> fansList = new ArrayList<>();
@@ -216,6 +218,14 @@ public class UserAccount implements Serializable {
 
     public String getEnemysString() {
         return UtilsString.formatArrayList(this.enemysList);
+    }
+
+    public ArrayList<String> getPeopleISentNotesTo() {
+        return peopleISentNotesTo;
+    }
+
+    public void setPeopleISentNotesTo(String userName) {
+        this.peopleISentNotesTo.add(userName);
     }
 
     /**

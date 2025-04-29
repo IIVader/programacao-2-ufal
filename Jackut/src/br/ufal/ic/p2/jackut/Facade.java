@@ -204,6 +204,10 @@ public class Facade {
         jackutSystem.addEnemy(id, inimigoNome);
     }
 
+    public void removerUsuario(String id) throws UnregisteredUserException {
+        jackutSystem.removeUser(id);
+    }
+
     /**
      * Encerra o sistema Jackut, liberando os recursos utilizados.
      */
