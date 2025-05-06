@@ -144,65 +144,211 @@ public class Facade {
         return jackutSystem.getFriends(login);
     }
 
+    /**
+     * Cria uma nova comunidade no sistema.
+     *
+     * @param id O ID do usuário que está criando a comunidade.
+     * @param nome O nome da comunidade a ser criada.
+     * @param descricao A descrição da comunidade.
+     * @throws UnregisteredUserException Se o usuário não estiver registrado.
+     * @throws CommunityAlreadyExistsException Se já existir uma comunidade com o mesmo nome.
+     */
+
     public void criarComunidade(String id, String nome, String descricao) throws UnregisteredUserException, CommunityAlreadyExistsException {
         jackutSystem.createCommunity(id, nome, descricao);
     }
+
+    /**
+     * Obtém a descrição de uma comunidade.
+     *
+     * @param nome O nome da comunidade.
+     * @return A descrição da comunidade.
+     * @throws CommunityDoesNotExistsException Se a comunidade não existir.
+     */
 
     public String getDescricaoComunidade(String nome) throws CommunityDoesNotExistsException {
         return jackutSystem.getDescriptionCommunity(nome);
     }
 
+    /**
+     * Obtém o dono de uma comunidade.
+     *
+     * @param nome O nome da comunidade.
+     * @return O nome do dono da comunidade.
+     * @throws CommunityDoesNotExistsException Se a comunidade não existir.
+     */
+
     public String getDonoComunidade(String nome) throws CommunityDoesNotExistsException {
         return jackutSystem.getOwnerCommunity(nome);
     }
+
+    /**
+     * Obtém os membros de uma comunidade.
+     *
+     * @param nome O nome da comunidade.
+     * @return Uma lista com os membros da comunidade.
+     * @throws CommunityDoesNotExistsException Se a comunidade não existir.
+     */
 
     public String getMembrosComunidade(String nome) throws CommunityDoesNotExistsException {
         return jackutSystem.getMembersCommunity(nome);
     }
 
+    /**
+     * Obtém as comunidades de um usuário.
+     *
+     * @param login O login do usuário.
+     * @return Uma lista de comunidades associadas ao usuário.
+     * @throws UnregisteredUserException Se o usuário não estiver registrado.
+     */
+
     public String getComunidades(String login) throws UnregisteredUserException {
         return jackutSystem.getCommunity(login);
     }
+
+    /**
+     * Adiciona um usuário a uma comunidade.
+     *
+     * @param id O ID do usuário a ser adicionado.
+     * @param nome O nome da comunidade.
+     * @throws UnregisteredUserException Se o usuário não estiver registrado.
+     * @throws CommunityDoesNotExistsException Se a comunidade não existir.
+     * @throws UserIsAlreadyInThisCommunityException Se o usuário já for membro da comunidade.
+     */
 
     public void adicionarComunidade(String id, String nome) throws UnregisteredUserException, CommunityDoesNotExistsException, UserIsAlreadyInThisCommunityException {
         jackutSystem.addComunity(id, nome);
     }
 
+    /**
+     * Envia uma mensagem para uma comunidade.
+     *
+     * @param id O ID do usuário que está enviando a mensagem.
+     * @param comunidadeReceptora O nome da comunidade para a qual a mensagem será enviada.
+     * @param mensagem O conteúdo da mensagem.
+     * @throws UnregisteredUserException Se o usuário não estiver registrado.
+     * @throws CommunityDoesNotExistsException Se a comunidade não existir.
+     */
+
     public void enviarMensagem(String id, String comunidadeReceptora, String mensagem) throws UnregisteredUserException, CommunityDoesNotExistsException {
         jackutSystem.sendMessage(id, comunidadeReceptora, mensagem);
     }
+
+    /**
+     * Lê a mensagem recebida por um usuário.
+     *
+     * @param id O ID do usuário que está lendo a mensagem.
+     * @return O conteúdo da mensagem recebida.
+     * @throws UnregisteredUserException Se o usuário não estiver registrado.
+     * @throws ThereAreNoMessagesException Se não houver mensagens para o usuário.
+     */
 
     public String lerMensagem(String id) throws UnregisteredUserException, ThereAreNoMessagesException {
         return jackutSystem.readMessage(id);
     }
 
+    /**
+     * Verifica se um usuário é fã de outro usuário.
+     *
+     * @param login O login do usuário.
+     * @param idolo O login do ídolo.
+     * @return Verdadeiro se o usuário for fã do ídolo, falso caso contrário.
+     */
+
     public Boolean ehFa(String login, String idolo) {
         return jackutSystem.isFan(login, idolo);
     }
+
+
+    /**
+     * Adiciona um ídolo a um usuário.
+     *
+     * @param id O ID do usuário que está adicionando um ídolo.
+     * @param nomeIdolo O nome do ídolo a ser adicionado.
+     * @throws UnregisteredUserException Se o usuário não estiver registrado.
+     * @throws UserAlreadyIsAnIdolException Se o usuário já for ídolo de outra pessoa.
+     * @throws UserCannotBeAFanOfHimselfException Se o usuário tentar ser fã de si mesmo.
+     * @throws InvalidFunctionDueEnemyException Se a função não for válida devido a um inimigo.
+     */
 
     public void adicionarIdolo(String id, String nomeIdolo) throws UnregisteredUserException, UserAlreadyIsAnIdolException, UserCannotBeAFanOfHimselfException, InvalidFunctionDueEnemyException {
         jackutSystem.addIdol(id, nomeIdolo);
     }
 
+
+    /**
+     * Obtém os fãs de um usuário.
+     *
+     * @param login O login do usuário.
+     * @return Uma lista de fãs do usuário.
+     */
+
     public String getFas(String login) {
         return jackutSystem.getFans(login);
     }
+
+    /**
+     * Verifica se um usuário tem uma paquera com outro usuário.
+     *
+     * @param id O ID do usuário.
+     * @param paquera O ID da paquera.
+     * @return Verdadeiro se o usuário tem uma paquera com o outro usuário, falso caso contrário.
+     * @throws UnregisteredUserException Se o usuário não estiver registrado.
+     */
 
     public Boolean ehPaquera(String id, String paquera) throws UnregisteredUserException {
         return jackutSystem.isCrush(id, paquera);
     }
 
+    /**
+     * Adiciona uma paquera a um usuário.
+     *
+     * @param id O ID do usuário que está adicionando uma paquera.
+     * @param paquera O ID da pessoa a ser adicionada como paquera.
+     * @throws UnregisteredUserException Se o usuário não estiver registrado.
+     * @throws UserIsAlreadyYourCrushException Se o usuário já tiver a pessoa como paquera.
+     * @throws UserCannotBeACrushOfHimselfException Se o usuário tentar ser paquera de si mesmo.
+     * @throws InvalidFunctionDueEnemyException Se a função não for válida devido a um inimigo.
+     */
+
     public void adicionarPaquera(String id, String paquera) throws UnregisteredUserException, UserIsAlreadyYourCrushException, UserCannotBeACrushOfHimselfException, InvalidFunctionDueEnemyException {
         jackutSystem.addCrush(id, paquera);
     }
+
+    /**
+     * Obtém as paqueras de um usuário.
+     *
+     * @param id O ID do usuário.
+     * @return Uma lista das paqueras do usuário.
+     * @throws UserCannotSendNoteToHimselfException Se o usuário tentar mandar uma mensagem para si mesmo.
+     * @throws UnregisteredUserException Se o usuário não estiver registrado.
+     * @throws InvalidFunctionDueEnemyException Se a função não for válida devido a um inimigo.
+     */
 
     public String getPaqueras(String id) throws UserCannotSendNoteToHimselfException, UnregisteredUserException, InvalidFunctionDueEnemyException {
         return jackutSystem.getCrushs(id);
     }
 
+    /**
+     * Adiciona um inimigo a um usuário.
+     *
+     * @param id O ID do usuário que está adicionando um inimigo.
+     * @param inimigoNome O nome do inimigo a ser adicionado.
+     * @throws UnregisteredUserException Se o usuário não estiver registrado.
+     * @throws UserIsAlreadyYourEnemyException Se o usuário já tiver a pessoa como inimigo.
+     * @throws UserCannotBeAEnemyOfHimselfException Se o usuário tentar ser inimigo de si mesmo.
+     */
+
     public void adicionarInimigo(String id, String inimigoNome) throws UnregisteredUserException, UserIsAlreadyYourEnemyException, UserCannotBeAEnemyOfHimselfException {
         jackutSystem.addEnemy(id, inimigoNome);
     }
+
+    /**
+     * Remove um usuário do sistema.
+     *
+     * @param id O ID do usuário a ser removido.
+     * @throws UnregisteredUserException Se o usuário não estiver registrado.
+     */
 
     public void removerUsuario(String id) throws UnregisteredUserException {
         jackutSystem.removeUser(id);

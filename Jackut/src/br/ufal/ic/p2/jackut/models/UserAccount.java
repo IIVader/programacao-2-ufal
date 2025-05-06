@@ -168,61 +168,156 @@ public class UserAccount implements Serializable {
         this.notesQueue.add(note);
     }
 
+    /**
+     * Retorna a lista de comunidades associadas.
+     *
+     * @return a lista de nomes das comunidades
+     */
+
     public ArrayList<String> getCommunityList() {
         return communityList;
     }
+
+    /**
+     * Adiciona o nome de uma comunidade à lista de comunidades.
+     *
+     * @param communityName o nome da comunidade a ser adicionada
+     */
 
     public void setCommunityList(String communityName) {
         this.communityList.add(communityName);
     }
 
+
+    /**
+     * Retorna a fila de mensagens.
+     *
+     * @return a fila de mensagens
+     */
+
     public Queue<Message> getMessagesQueue() {
         return messagesQueue;
     }
+
+    /**
+     * Adiciona uma mensagem à fila de mensagens.
+     *
+     * @param message a mensagem a ser adicionada à fila
+     */
 
     public void setMessagesQueue(Message message) {
         this.messagesQueue.add(message);
     }
 
+    /**
+     * Retorna a lista de fãs.
+     *
+     * @return a lista de nomes dos fãs
+     */
+
     public ArrayList<String> getFansList() {
         return fansList;
     }
+
+    /**
+     * Adiciona o nome de um fã à lista de fãs.
+     *
+     * @param fanName o nome do fã a ser adicionado
+     */
 
     public void setFansList(String fanName) {
         this.fansList.add(fanName);
     }
 
+    /**
+     * Retorna uma representação em forma de string dos fãs, formatados.
+     * Utiliza o método {@link UtilsString#formatArrayList(ArrayList)} para formatar a lista de fãs.
+     *
+     * @return uma string formatada com os fãs
+     */
+
     public String getFansString() {
         return UtilsString.formatArrayList(this.fansList);
     }
+
+    /**
+     * Retorna a lista de crushes.
+     *
+     * @return a lista de nomes dos crushes
+     */
 
     public ArrayList<String> getCrushsList() {
         return crushsList;
     }
 
+    /**
+     * Adiciona o nome de um crush à lista de crushes.
+     *
+     * @param crushName o nome do crush a ser adicionado
+     */
+
     public void setCrushsList(String crushName) {
         this.crushsList.add(crushName);
     }
+
+    /**
+     * Retorna uma representação em forma de string dos crushes, formatados.
+     * Utiliza o método {@link UtilsString#formatArrayList(ArrayList)} para formatar a lista de crushes.
+     *
+     * @return uma string formatada com os crushes
+     */
 
     public String getCrushsString() {
         return UtilsString.formatArrayList(this.crushsList);
     }
 
+    /**
+     * Retorna a lista de inimigos.
+     *
+     * @return a lista de nomes dos inimigos
+     */
+
     public ArrayList<String> getEnemysList() {
         return enemysList;
     }
+
+    /**
+     * Adiciona o nome de um inimigo à lista de inimigos.
+     *
+     * @param enemyName o nome do inimigo a ser adicionado
+     */
 
     public void setEnemysList(String enemyName) {
         this.enemysList.add(enemyName);
     }
 
+    /**
+     * Retorna uma representação em forma de string dos inimigos, formatados.
+     * Utiliza o método {@link UtilsString#formatArrayList(ArrayList)} para formatar a lista de inimigos.
+     *
+     * @return uma string formatada com os inimigos
+     */
+
     public String getEnemysString() {
         return UtilsString.formatArrayList(this.enemysList);
     }
 
+
+    /**
+     * Retorna a lista de pessoas para as quais foram enviadas notas.
+     *
+     * @return a lista de nomes das pessoas que receberam notas
+     */
+
     public ArrayList<String> getPeopleISentNotesTo() {
         return peopleISentNotesTo;
     }
+
+    /**
+     * Adiciona o nome de uma pessoa à lista de pessoas para as quais foram enviadas notas.
+     *
+     * @param userName o nome da pessoa que recebeu a nota
+     */
 
     public void setPeopleISentNotesTo(String userName) {
         this.peopleISentNotesTo.add(userName);
